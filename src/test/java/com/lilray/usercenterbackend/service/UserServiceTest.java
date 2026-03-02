@@ -41,4 +41,6 @@ class UserServiceTest {
         long userId = userService.userRegister("lilray1", "12345678", "12345678");
         System.out.println(userId);
     }
+
+
 }
