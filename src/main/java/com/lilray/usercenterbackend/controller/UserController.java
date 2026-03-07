@@ -53,6 +53,19 @@ public class UserController {
 
     }
 
+    @GetMapping("/current")
+    public User getCurrentUser(HttpServletRequest request){
+        User currentUser = (User)request.getSession().getAttribute(USER_LOGIN_STATE);
+        if (currentUser == null){
+            return null;
+        }
+        //获取最新的用户信息，比如用户积分等
+        Long userId = currentUser.getId();
+        User user = userService.getById(userId);
+        //脱敏
+        return userService.getSafetyUser(user);
+    }
+
     @GetMapping("/search")
     public List<User> searchUsers(String UserName,HttpServletRequest request){
         //1.仅管理员可查询
