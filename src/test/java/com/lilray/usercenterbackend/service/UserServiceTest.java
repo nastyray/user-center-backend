@@ -1,5 +1,4 @@
 package com.lilray.usercenterbackend.service;
-import java.util.Date;
 
 import com.lilray.usercenterbackend.model.domain.User;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +37,7 @@ class UserServiceTest {
 
     @Test
     void userRegister() {
-        long userId = userService.userRegister("lilray1", "12345678", "12345678");
+        long userId = userService.userRegister("lilray1", "12345678", "12345678", "1");
         System.out.println(userId);
     }
 

@@ -33,10 +33,11 @@ public class UserController {
         String useAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyBlank(useAccount, userPassword, checkPassword)) {
+        String planetCode = userRegisterRequest.getPlanetCode();
+        if (StringUtils.isAnyBlank(useAccount, userPassword, checkPassword,planetCode)) {
             return null;
         }
-        return userService.userRegister(useAccount, userPassword, checkPassword);
+        return userService.userRegister(useAccount, userPassword, checkPassword,planetCode);
 
     }
 

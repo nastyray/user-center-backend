@@ -35,9 +35,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public long userRegister(String useAccount, String userPassword, String checkPassword) {
+    public long userRegister(String useAccount, String userPassword, String checkPassword, String planetCode) {
         //1.校验
-        if (StringUtils.isAnyBlank(useAccount, userPassword, checkPassword)) {
+        if (StringUtils.isAnyBlank(useAccount, userPassword, checkPassword,planetCode)) {
             //TODO 修改为自定义异常
             return -1;
         }
@@ -47,6 +47,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         if (userPassword.length() < 8 || checkPassword.length() < 8) {
+            return -1;
+        }
+
+        if (planetCode.length() > 5 ) {
             return -1;
         }
 
@@ -60,19 +64,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         //账户不能重复
-        //        long count = this.count(new QueryWrapper<User>().eq(User::getUserAccount,useAccount));
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>().eq(User::getUserAccount, useAccount);
-        //        long count = this.count(queryWrapper);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
             return -1;
         }
+
+        // 星球编码不能重复
+        queryWrapper = new LambdaQueryWrapper<User>().eq(User::getPlanetCode, planetCode);
+        count = userMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            return -1;
+        }
+
         //2.加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         //3.存储
         User user = new User();
         user.setUserAccount(useAccount);
         user.setUserPassword(encryptPassword);
+        user.setPlanetCode(planetCode);
         int saveResult = userMapper.insert(user);
         if (saveResult == 0) {
             return -1;
@@ -146,6 +157,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safetyUser.setUserStatus(originUser.getUserStatus());
         safetyUser.setCreateTime(originUser.getCreateTime());
         safetyUser.setUserRole(originUser.getUserRole());
+        safetyUser.setPlanetCode(originUser.getPlanetCode());
         return safetyUser;
     }
 

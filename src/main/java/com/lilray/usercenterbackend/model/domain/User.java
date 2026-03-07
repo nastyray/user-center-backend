@@ -78,4 +78,9 @@ public class User {
      */
     @TableLogic
     private Integer isDelete;
+
+    /**
+     * 星球编号
+     */
+    private String planetCode;
 }
