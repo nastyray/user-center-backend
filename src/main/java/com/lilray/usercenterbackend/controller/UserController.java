@@ -40,7 +40,8 @@ public class UserController {
 
     }
 
-    @PostMapping("/login") public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    @PostMapping("/login")
+    public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
             return null;
         }
@@ -52,6 +53,16 @@ public class UserController {
         return userService.userLogin(useAccount, userPassword,request);
 
     }
+
+    @PostMapping("/logout")
+    public Integer userLogout( HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
+        return userService.userLogout(request);
+    }
+
+
 
     @GetMapping("/current")
     public User getCurrentUser(HttpServletRequest request){
