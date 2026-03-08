@@ -2,6 +2,8 @@ package com.lilray.usercenterbackend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lilray.usercenterbackend.common.ErrorCode;
+import com.lilray.usercenterbackend.exception.BusinessException;
 import com.lilray.usercenterbackend.model.domain.User;
 import com.lilray.usercenterbackend.service.UserService;
 import com.lilray.usercenterbackend.mapper.UserMapper;
@@ -38,25 +40,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public long userRegister(String useAccount, String userPassword, String checkPassword, String planetCode) {
         //1.校验
         if (StringUtils.isAnyBlank(useAccount, userPassword, checkPassword,planetCode)) {
-            //TODO 修改为自定义异常
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"参数为空");
         }
 
         if (useAccount.length() < 4) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户账号长度不能小于4");
         }
 
         if (userPassword.length() < 8 || checkPassword.length() < 8) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"密码长度不能小于8");
         }
 
         if (planetCode.length() > 5 ) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"星球编码长度不能大于5");
         }
 
         // 账户不能包含特殊字符
         if (!useAccount.matches("[a-zA-Z0-9_]+")) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账户不能包含特殊字符");
         }
 
         if (!userPassword.equals(checkPassword)) {
