@@ -100,7 +100,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.lilray.usercenterbackend.UserCenterBackendApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

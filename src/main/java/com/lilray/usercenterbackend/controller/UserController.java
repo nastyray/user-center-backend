@@ -74,7 +74,7 @@ public class UserController {
     public BaseResponse<User> getCurrentUser(HttpServletRequest request){
         User currentUser = (User)request.getSession().getAttribute(USER_LOGIN_STATE);
         if (currentUser == null){
-            return null;
+            throw new BusinessException(ErrorCode.No_LOGIN);
         }
         //获取最新的用户信息，比如用户积分等
         Long userId = currentUser.getId();
