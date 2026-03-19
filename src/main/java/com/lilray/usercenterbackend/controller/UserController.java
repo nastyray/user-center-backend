@@ -25,6 +25,7 @@ import static com.lilray.usercenterbackend.constant.UserConstant.USER_LOGIN_STAT
  */
 @RestController
 @RequestMapping("/user")
+//@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 public class UserController {
 
     @Resource private UserService userService;
@@ -85,14 +86,14 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public BaseResponse<List<User>> searchUsers(String UserName,HttpServletRequest request){
+    public BaseResponse<List<User>> searchUsers(String username,HttpServletRequest request){
         //1.仅管理员可查询
         if (!isAdmin(request)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        if (StringUtils.isNotBlank(UserName)){{
-            userLambdaQueryWrapper.like(User::getUsername,UserName);
+        if (StringUtils.isNotBlank(username)){{
+            userLambdaQueryWrapper.like(User::getUsername,username);
         }}
         List<User> userList = userService.list(userLambdaQueryWrapper);
         List<User> list = userList.stream().map(userService::getSafetyUser).collect(Collectors.toList());
